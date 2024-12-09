@@ -16,7 +16,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
         length = len(password)
 
-        if length<8:
+        if length<4:
             raise serializers.ValidationError({'error':'Password must need 8 charecters'})
             
         if password != confirm_password:

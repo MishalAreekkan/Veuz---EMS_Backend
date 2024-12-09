@@ -8,6 +8,7 @@ class EmployeeFormSerializer(serializers.ModelSerializer):
         
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
+            print(attr, value, validated_data)
             setattr(instance, attr, value)
 
         instance.save()

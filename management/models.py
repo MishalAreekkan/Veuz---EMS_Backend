@@ -6,7 +6,7 @@ class EmployeeForm(models.Model):
     created_by = models.ForeignKey(User,on_delete=models.CASCADE, 
                                    related_name='employee_forms', 
                                    null=True)    
-    dynamic_fields = models.JSONField() 
+    dynamic_fields = models.JSONField(null=True) 
     
     def __str__(self):
         return f"Form for {self.created_by.username} "
@@ -15,7 +15,7 @@ class EmployeeForm(models.Model):
 
 class EmployeeManagement(models.Model):
     form = models.ForeignKey(EmployeeForm, on_delete=models.CASCADE, related_name='employee_profile')
-    dynamic_data = models.JSONField(default=dict)
+    dynamic_data = models.JSONField(default=dict, null=True)
 
     def __str__(self):
         return f"Employee Profile for {self.form.created_by.username}"

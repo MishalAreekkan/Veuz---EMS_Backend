@@ -20,7 +20,9 @@ class EmployeeFormView(APIView):
     def put(self, request):
         data = {"dynamic_fields": request.data}
         try:
+            print(data, request.user)
             employee_form, _ = EmployeeForm.objects.get_or_create(created_by=request.user)
+            print(employee_form, _)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = EmployeeFormSerializer(instance=employee_form, data=data, context={'request': request})
