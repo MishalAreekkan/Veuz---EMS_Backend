@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import EmployeeForm,EmployeeManagement
-from .serializer import EmployeeFormSerializer,EmployeeManagementSerializer
+from .serializer import EmployeeFormSerializer
 
 class EmployeeFormView(APIView):
     permission_classes = [IsAuthenticated]
@@ -27,7 +27,7 @@ class EmployeeFormView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = EmployeeFormSerializer(instance=employee_form, data=data, context={'request': request})
         if serializer.is_valid():
-            serializer.save()  # Calls the serializer's `update` method
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -38,25 +38,22 @@ class UpdateEmployeeFormDataAPIView(APIView):
     
     def get(self, request, profile_id=None):
         try:
-            # Extract the single key-value pair from query parameters
+
             search_params = request.query_params
             search_key, search_value = None, None
 
             if search_params:
                 search_key, search_value = list(search_params.items())[0]
 
-            # Base query
             query = EmployeeManagement.objects.filter(form__created_by=request.user)
 
-            # Apply filter for dynamic_data JSONField
+    
             if search_key and search_value.strip():
                 query = query.filter(**{f"dynamic_data__{search_key}__icontains": search_value.strip()})
 
-            # Apply additional filter for profile_id if provided
             if profile_id:
                 query = query.filter(id=profile_id)
 
-            # Fetch data
             employee_data = query.values()
 
             return Response(

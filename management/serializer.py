@@ -15,7 +15,3 @@ class EmployeeFormSerializer(serializers.ModelSerializer):
         return instance
 
 
-class EmployeeManagementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmployeeManagement
-        fields = ['form', 'dynamic_data']

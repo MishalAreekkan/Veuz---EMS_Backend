@@ -22,7 +22,6 @@ class EmployeeRegistration(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
         
     def post(self,request):
-        print("lllllllllll")
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             User.objects.create_user(
